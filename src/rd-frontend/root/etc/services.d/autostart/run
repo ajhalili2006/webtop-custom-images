@@ -4,7 +4,7 @@
 if [ -z ${GUIAUTOSTART+x} ]; then
   echo "[guac-init] Auto start not set, application start on login"
   sleep infinity
-# start abc session by sending a token to guacamole via websockets
+# start gildedguy session by sending a token to guacamole via websockets
 else
   # make sure services are up
   until \

@@ -3,8 +3,8 @@
 ## Directories
 
 * [`desktop-frontend`](./src/kde-desktop) - The main Docker image for my choosen desktop environment (KDE)
-* [`remote-desktop-frontend`](./src/rd-frontend) - TODO
-* [`remote-desktop-backend](./src/rd-backend) - TODO
+* [`remote-desktop-frontend`](./src/rd-frontend) - The frontend stuff of Remote Desktop in Browser
+* [`remote-desktop-backend`](./src/rd-backend) - The backend stuff of Remote Desktop in Browser
 * [`ubuntu-rootfs-cloudimg`](./src/rootfs-cloudimg) - TODO
 
 ## License

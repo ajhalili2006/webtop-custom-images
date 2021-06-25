@@ -101,8 +101,8 @@ RUN \
  apt-get install -y --no-install-recommends \
 	docker-ce-cli && \
  echo "**** cleanup and user perms ****" && \
- echo "abc:abc" | chpasswd && \
- usermod -aG sudo abc && \
+ echo "gildedguy:gildedguy" | chpasswd && \
+ usermod -aG sudo gildedguy && \
  apt-get autoclean && \
  rm -rf \
 	/var/lib/apt/lists/* \
