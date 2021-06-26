@@ -1,13 +1,24 @@
 name: "[docker-image-builds] Ubuntu Cloud Image RootFS"
 
 env:
+  # Ubuntu LTS release name to use for downloading cloud images
+  # from Canonical's Partner Images server, among other things.
   UBUNTU_LTS_CODENAME: focal
-  RHQCR_BOT_ACCOUNT: ${{ env.RHQCR_NAMESPACE }}+${{ secrets.RHQCR_SERVICE_ACCOUNT_SLUG }}
-  RHQCR_BOT_PASSWORD: ${{ secrets.RHQCR_SERVICE_ACCOUNT_API_KEY }}
-  GHCR_PAT: ${{ secrets.LTT_STORE_DOT_COM }}
-  GHCR_USERNAME: ${{ github.repository_owner }}
+
+  # Registry namespaces, to avoid only-lowercase-supported errors
   GHCR_NAMESPACE: andreijirohhalilidev2006
   RHQCR_NAMESPACE: ajhalili2006
+
+  # Service account stuff for Quay.io
+  RHQCR_BOT_ACCOUNT: ${{ format('{1}+{2}',env.RHQCR_NAMESPACE, secrets.RHQCR_SERVICE_ACCOUNT_SLUG) }}
+  RHQCR_BOT_PASSWORD: ${{ secrets.RHQCR_SERVICE_ACCOUNT_API_KEY }}
+
+  # GHCR
+  GHCR_PAT: ${{ secrets.LTT_STORE_DOT_COM }}
+  # may not work if forked in an org, use an bot account instead
+  GHCR_USERNAME: ${{ github.repository_owner }}
+
+  # Other stuff for Docker builds
   image_name: ubuntu-rootfs-cloudimg
   context: src/rootfs-cloudimg
 
@@ -24,7 +35,7 @@ on:
     - cron: "30 3 */6 * *"
 
 jobs:
-  cloud-rootfs-build-nightly:
+  cloudimg-rootfs-nightly:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -68,8 +79,11 @@ jobs:
             REL=${{ env.UBUNTU_LTS_CODENAME }}
   cloudimg-rootfs-release:
      runs-on: ubuntu-latest
+     # For forks, here's the configuration:
+     #  - Wait time: 30 minute
+     #  - Approvers: usually you
      environment: ship-changes
-     needs: [ cloud-rootfs-build-nightly ]
+     needs: [ cloudimg-rootfs-nightly ]
      permissions:
        # This will alwyas set to read, no need for this.
        #metadata: read
