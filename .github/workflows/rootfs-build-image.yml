@@ -6,7 +6,7 @@ env:
   UBUNTU_LTS_CODENAME: focal
 
   # Registry namespaces, to avoid only-lowercase-supported errors
-  GHCR_NAMESPACE: andreijirohhalilidev2006
+  GHCR_NAMESPACE: ajhalili2006
   RHQCR_NAMESPACE: ajhalili2006
 
   # Service account stuff for Quay.io
