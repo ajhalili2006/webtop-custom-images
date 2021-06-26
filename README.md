@@ -1,11 +1,14 @@
-# Custom Webtop Docker Image for my Personal Dotfiles in an Container
+# Custom Webtop Docker Images
+
+These Docker images reside here are usually used for my dotfiles repo
+for testing, among other sort of shitfuckery.
 
 ## Directories
 
-* [`desktop-frontend`](./src/kde-desktop) - The main Docker image for my choosen desktop environment (KDE)
+* [`webtop-kde-desktop`](./src/kde-desktop) - The main Docker image for my choosen desktop environment (KDE)
 * [`remote-desktop-frontend`](./src/rd-frontend) - The frontend stuff of Remote Desktop in Browser
 * [`remote-desktop-backend`](./src/rd-backend) - The backend stuff of Remote Desktop in Browser
-* [`ubuntu-rootfs-cloudimg`](./src/rootfs-cloudimg) - TODO
+* [`ubuntu-rootfs-cloudimg`](./src/rootfs-cloudimg) - The base Ubuntu RootFS Cloud inage, built from scratch.
 
 ## License
 

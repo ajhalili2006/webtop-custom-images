@@ -1,0 +1,97 @@
+name: "[docker-image-builds] Ubuntu Cloud Image RootFS"
+
+env:
+  UBUNTU_LTS_CODENAME: focal
+  RHQCR_BOT_ACCOUNT: ajhalili2006+${{ secrets.RHQCR_SERVICE_ACCOUNT_SLUG }}
+  RHQCR_BOT_PASSWORD: ${{ secrets.RHQCR_SERVICE_ACCOUNT_SLUG }}
+  GHCR_PAT: ${{ secrets.LTT_STORE_DOT_COM }}
+  GHCR_USERNAME: ${{ github.repository_owner }}
+  GHCR_NAMESPACE: andreijirohhalilidev2006
+  RHQCR_NAMESPACE: ajhalili2006
+  image_name: ubuntu-rootfs-cloudimg
+  context: src/rootfs-cloudimg
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "src/rootfs-cloudimg/Dockerfile"
+      - "src/rootfs-cloudimg/sources.list"
+      - "src/rootfs-cloudimg/patch/**"
+      - "src/rootfs-cloudimg/root/**"
+      - ".trigger-build"
+  schedule:
+    - cron: "30 3 */6 * *"
+
+jobs:
+  cloud-rootfs-build-nightly:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login with GHCR
+        uses: docker/login-action@v1
+        with:
+          username: ${{ env.GHCR_USERNAME }}
+          password: ${{ env.GHCR_PAT }}
+          registry: ghcr.io
+      - name: Login with RHQCR
+        uses: docker/login-action@v1
+        with:
+          username: ${{ env.RHQCR_BOT_ACCOUNT }}
+          password: ${{ env.RHQCR_BOT_PASSWORD }}
+          registry: quay.io
+      - name: Generate matadata
+        uses: docker/metadata-action@v3
+        id: meta
+        with:
+          images: |
+            ghcr.io/${{ env.GHCR_NAMESPACE }}/${{ env.image_name }}
+            quay.io/${{ env.RHQCR_NAMESPACE }}/${{ env.image_name }}
+          tags: |
+            type=sha,format=long
+            type=schedule,pattern=nightly-${{ env.UBUNTU_LTS_CODENAME }}
+            type=schedule,pattern=nightly
+          flavor: |
+            latest=false
+      - name: Build da image
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ env.context }}
+          tags: ${{ steps.meta.outputs.tags }}
+          push: true
+          labels: ${{ steps.meta.outputs.labels }}
+  cloudimg-rootfs-release:
+     environment: ship-changes
+     needs: [ cloud-rootfs-build-nightly ]
+     steps:
+      - uses: actions/checkout@v2
+      - name: Login with GHCR
+        uses: docker/login-action@v1
+        with:
+          username: ${{ env.GHCR_USERNAME }}
+          password: ${{ env.GHCR_PAT }}
+          registry: ghcr.io
+      - name: Login with RHQCR
+        uses: docker/login-action@v1
+        with:
+          username: ${{ env.RHQCR_BOT_ACCOUNT }}
+          password: ${{ env.RHQCR_BOT_PASSWORD }}
+          registry: quay.io
+      - name: Generate matadata
+        uses: docker/metadata-action@v3
+        id: meta
+        with:
+          images: |
+            ghcr.io/${{ env.GHCR_NAMESPACE }}/${{ env.image_name }}
+            quay.io/${{ env.RHQCR_NAMESPACE }}/${{ env.image_name }}
+          tags: |
+            ${{ env.UBUNTU_LTS_CODENAME }}
+          flavor: |
+            latest=true
+      - name: Build da image
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ env.context }}
+          tags: ${{ steps.meta.outputs.tags }}
+          push: true
+          labels: ${{ steps.meta.outputs.labels }}
