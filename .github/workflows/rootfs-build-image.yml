@@ -71,7 +71,8 @@ jobs:
      environment: ship-changes
      needs: [ cloud-rootfs-build-nightly ]
      permissions:
-       metadata: read
+       # This will alwyas set to read, no need for this.
+       #metadata: read
        contents: write
      steps:
       #- name: Setup Git
