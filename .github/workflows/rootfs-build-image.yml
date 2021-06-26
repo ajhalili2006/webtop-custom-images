@@ -122,4 +122,4 @@ jobs:
       #    date | base64 > src/rd-backend/.trigger-build
       #    git add .
       #    git commit -m "[ci] trigger docker build for rd-desktop"
-          git push
+      #    git push
