@@ -60,10 +60,10 @@ jobs:
             quay.io/${{ env.RHQCR_NAMESPACE }}/${{ env.image_name }}
           tags: |
             type=sha,format=long
-            type=schedule,pattern=nightly-${{ env.UBUNTU_LTS_CODENAME }}
-            type=schedule,pattern=nightly
+            nightly-${{ env.UBUNTU_LTS_CODENAME }}
+            nightly
           flavor: |
-            latest=false
+            latest=false   
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
