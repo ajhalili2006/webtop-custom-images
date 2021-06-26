@@ -6,11 +6,11 @@ env:
   UBUNTU_LTS_CODENAME: focal
 
   # Registry namespaces, to avoid only-lowercase-supported errors
-  GHCR_NAMESPACE: andreijirohhalilidev2006
-  RHQCR_NAMESPACE: ajhalili2006
+  GHCR_NAMESPACE: ${{ secrets.LTT_STORE_SUBNAMESPACE }}
+  RHQCR_NAMESPACE: ${{ secrets.RHQCR_NAMESPACE }}
 
   # Service account stuff for Quay.io
-  RHQCR_BOT_ACCOUNT: ${{ format('{1}+{2}',env.RHQCR_NAMESPACE, secrets.RHQCR_SERVICE_ACCOUNT_SLUG) }}
+  RHQCR_BOT_ACCOUNT: ${{ format('{1}+{2}', secrets.RHQCR_NAMESPACE, secrets.RHQCR_SERVICE_ACCOUNT_SLUG) }}
   RHQCR_BOT_PASSWORD: ${{ secrets.RHQCR_SERVICE_ACCOUNT_API_KEY }}
 
   # GHCR
