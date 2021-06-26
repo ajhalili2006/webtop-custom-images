@@ -24,4 +24,4 @@ FROM ghcr.io/andreijirohhalilidev2006/ubuntu-cloudimg-rootfs as builder
 
 ## Why Ubuntu LTS?
 
-I always consider stability over feature-packed, because security is one of the protities I focus when it comes to building production-grade containers.
+I always consider stability over feature-packed, because security is one of the protities I focus when it comes to building production-grade containers. While I may need to automate stuff, this should be fine.
