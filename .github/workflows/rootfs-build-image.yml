@@ -2,8 +2,8 @@ name: "[docker-image-builds] Ubuntu Cloud Image RootFS"
 
 env:
   UBUNTU_LTS_CODENAME: focal
-  RHQCR_BOT_ACCOUNT: ajhalili2006+${{ secrets.RHQCR_SERVICE_ACCOUNT_SLUG }}
-  RHQCR_BOT_PASSWORD: ${{ secrets.RHQCR_SERVICE_ACCOUNT_SLUG }}
+  RHQCR_BOT_ACCOUNT: ${{ env.RHQCR_NAMESPACE }}+${{ secrets.RHQCR_SERVICE_ACCOUNT_SLUG }}
+  RHQCR_BOT_PASSWORD: ${{ secrets.RHQCR_SERVICE_ACCOUNT_API_KEY }}
   GHCR_PAT: ${{ secrets.LTT_STORE_DOT_COM }}
   GHCR_USERNAME: ${{ github.repository_owner }}
   GHCR_NAMESPACE: andreijirohhalilidev2006
