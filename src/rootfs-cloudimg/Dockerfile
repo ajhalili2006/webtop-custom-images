@@ -14,10 +14,6 @@ RUN mkdir /root-out && curl -o /rootfs.tar.gz -L https://partner-images.canonica
 # Runtime stage
 FROM scratch
 COPY --from=rootfs-stage /root-out/ /
-ARG BUILD_DATE
-ARG VERSION
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="TheLamer"
 
 # set version for s6 overlay
 ARG OVERLAY_VERSION="v2.2.0.3"
