@@ -1,9 +1,12 @@
-name: "[docker-image-builds] Ubuntu Cloud Image RootFS"
+name: "[docker-image-builds] Remote Dekstop Backend"
 
 env:
   # Ubuntu LTS release name to use for downloading cloud images
   # from Canonical's Partner Images server, among other things.
   UBUNTU_LTS_CODENAME: focal
+
+  # Pluseaudio module for XRDP, see https://github.com/neutrinolabs/pulseaudio-module-xrdp/releases for latest releases
+  XRDP_PLUSE_VERSION: v0.5
 
   # Registry namespaces, to avoid only-lowercase-supported errors
   GHCR_NAMESPACE: ajhalili2006
@@ -19,8 +22,8 @@ env:
   GHCR_USERNAME: ${{ github.repository_owner }}
 
   # Other stuff for Docker builds
-  image_name: ubuntu-rootfs-cloudimg
-  context: src/rootfs-cloudimg
+  image_name: remote-desktop-backend
+  context: src/rd-backend
 
   RELEASES_GPG_KEY: ${{ secrets.CURSED_CONTENT_OVER_HERE }}
   RELEASES_GPG_PASSPHARSE: ${{ secrets.COOL_AND_NORMAL }}
@@ -29,16 +32,12 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "src/rootfs-cloudimg/Dockerfile"
-      - "src/rootfs-cloudimg/sources.list"
-      - "src/rootfs-cloudimg/patch/**"
-      - "src/rootfs-cloudimg/root/**"
-      - ".trigger-build"
-  schedule:
-    - cron: "30 3 */6 * *"
+      - "src/rd-backend/Dockerfile"
+      - "src/rd-backend/root/**"
+      - "src/rd-backend/.trigger-build"
 
 jobs:
-  cloudimg-rootfs-nightly:
+  rd-backend-nightly:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -79,14 +78,14 @@ jobs:
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            REL=${{ env.UBUNTU_LTS_CODENAME }}
-  cloudimg-rootfs-release:
+            XRDP_PULSE_VERSION=${{ env.XRDP_PLUSE_VERSION }}
+  rd-backend-release:
      runs-on: ubuntu-latest
      # For forks, here's the configuration:
      #  - Wait time: 30 minute
      #  - Approvers: usually you
-     environment: ship-changes
-     needs: [ cloudimg-rootfs-nightly ]
+     environment: ship-changes-rdbackend
+     needs: [ rd-backend-nightly ]
      permissions:
        # This will alwyas set to read, no need for this.
        #metadata: read
@@ -131,10 +130,10 @@ jobs:
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            REL=${{ env.UBUNTU_LTS_CODENAME }}
-      - name: Trigger CI for the rd-backend
+            XRDP_PLUSE_VERSION=${{ env.XRDP_PLUSE_VERSION }}
+      - name: Trigger CI for the rd-frontend
         run: |
-          date | base64 > src/rd-backend/.trigger-build
+          date | base64 > src/rd-frontend/.trigger-build
           git add .
-          git commit -m "[ci] trigger docker build for rd-backend" --signoff
+          git commit -m "[ci] trigger docker build for rd-frontend" --signoff
           git push
