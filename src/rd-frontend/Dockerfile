@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-ubuntu:focal as builder
+FROM quay.io/ajhalili2006/ubuntu-rootfs-cloudimg:focal as builder
 
 ARG GUACD_VERSION=1.1.0
 
@@ -59,7 +59,7 @@ RUN \
 	/tmp/out/guacd_${GUACD_VERSION}.deb
 
 # nodejs builder
-FROM ghcr.io/linuxserver/baseimage-ubuntu:focal as nodebuilder
+FROM quay.io/ajhalili2006/ubuntu-rootfs-cloudimg:focal as nodebuilder
 ARG GCLIENT_RELEASE
 
 RUN \
@@ -98,14 +98,9 @@ RUN \
  npm install 
 
 # runtime stage
-FROM ghcr.io/linuxserver/baseimage-rdesktop:focal
+FROM quay.io/ajhalili2006/remote-desktop-backend:focal
 
-# set version label
-ARG BUILD_DATE
-ARG VERSION
 ARG GUACD_VERSION=1.1.0
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="thelamer"
 
 # Copy build outputs
 COPY --from=builder /tmp/out /tmp/out

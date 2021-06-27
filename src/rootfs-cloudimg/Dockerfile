@@ -90,9 +90,9 @@ RUN \
 	tzdata && \
  echo "**** generate locale ****" && \
  locale-gen en_US.UTF-8 && \
- echo "**** create abc user and make our folders ****" && \
- useradd -u 911 -U -d /config -s /bin/false abc && \
- usermod -G users abc && \
+ echo "**** create gildedguy user and make our folders ****" && \
+ useradd -u 911 -U -d /config -s /bin/false gildedguy && \
+ usermod -G users gildedguy && \
  mkdir -p \
 	/app \
 	/config \
