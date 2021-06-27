@@ -34,7 +34,7 @@ on:
       - "src/kde-desktop/.trigger-build"
 
 jobs:
-  rd-frontend-nightly:
+  webtop-kubuntu-nightly:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -74,13 +74,13 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           push: true
           labels: ${{ steps.meta.outputs.labels }}
-  rd-frontend-release:
+  webtop-kubuntu-release:
      runs-on: ubuntu-latest
      # For forks, here's the configuration:
      #  - Wait time: 30 minute
      #  - Approvers: usually you
-     environment: ship-changes-rdfrontend
-     needs: [ rd-frontend-nightly ]
+     environment: ship-changes-webtop-kubuntu
+     needs: [ webtop-kubuntu-nightly ]
      permissions:
        # This will alwyas set to read, no need for this.
        #metadata: read
