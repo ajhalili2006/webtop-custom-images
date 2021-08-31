@@ -35,7 +35,7 @@ on:
       - "src/rootfs-cloudimg/root/**"
       - ".trigger-build"
   schedule:
-    - cron: "30 3 */6 * *"
+    - cron: "30 3 */11 * *"
 
 jobs:
   cloudimg-rootfs-nightly:
