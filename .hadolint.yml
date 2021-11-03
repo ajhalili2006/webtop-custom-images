@@ -1,0 +1,4 @@
+trustedRegistries:
+  - ghcr.io
+  - quay.io
+  - docker.io
