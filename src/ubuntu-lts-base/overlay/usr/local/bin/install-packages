@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -o errexit
+
+if [ $# = 0 ]; then
+  echo >&2 "No packages specified"
+  exit 1
+fi
+
+# Patch from https://github.com/gitpod-io/workspace-images/blob/ca92f62a62e65eb404b23fa1cda8a769040b03db/base/upgrade-packages#L5-L9 to
+# ensure I'll not forget sudo again.
+# Block users from running this unless they're root.
+if [[ $EUID != 0 ]]; then
+  echo >&2 "Run this script again as root to upgrade packages."
+  exit 1
+fi
+
+# Set a runlevel to avoid invoke-rc.d warnings
+# http://manpages.ubuntu.com/manpages/focal/man8/runlevel.8.html#environment
+# shellcheck disable=SC2034
+RUNLEVEL=1
+
+# shellcheck disable=SC2034
+DEBIAN_FRONTEND=noninteractive
+
+DAZZLE_MARKS="/var/lib/apt/dazzle-marks/"
+TIMESTAMP=$(date +%s)
+
+if [ ! -d "${DAZZLE_MARKS}" ]; then
+  mkdir -p "${DAZZLE_MARKS}"
+fi
+
+apt-get update
+apt-get install -yq --no-install-recommends "$@"
+
+cp /var/lib/dpkg/status "${DAZZLE_MARKS}/${TIMESTAMP}.status"
+
+apt-get clean -y
+
+rm -rf \
+   /var/cache/debconf/* \
+   /var/lib/apt/lists/* \
+   /tmp/* \
+   /var/tmp/*

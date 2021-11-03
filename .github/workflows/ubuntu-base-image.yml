@@ -19,8 +19,8 @@ env:
   GHCR_USERNAME: ${{ github.repository_owner }}
 
   # Other stuff for Docker builds
-  image_name: ubuntu-rootfs-cloudimg
-  context: src/rootfs-cloudimg
+  image_name: ubuntu-base
+  context: src/ubuntu-lts-base
 
   RELEASES_GPG_KEY: ${{ secrets.CURSED_CONTENT_OVER_HERE }}
   RELEASES_GPG_PASSPHARSE: ${{ secrets.COOL_AND_NORMAL }}
@@ -29,67 +29,32 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "src/rootfs-cloudimg/Dockerfile"
-      - "src/rootfs-cloudimg/sources.list"
-      - "src/rootfs-cloudimg/patch/**"
-      - "src/rootfs-cloudimg/root/**"
+      - "src/ubuntu-lts-base/Dockerfile"
+      - "src/ubuntu-lts-base/sources.list.d/*.list"
       - ".trigger-build"
-  schedule:
-    - cron: "30 3 */11 * *"
+  #schedule:
+  #  - cron: "30 3 */11 * *"
 
 jobs:
-  cloudimg-rootfs-nightly:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Login with GHCR
-        uses: docker/login-action@v1
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
         with:
-          username: ${{ env.GHCR_USERNAME }}
-          password: ${{ env.GHCR_PAT }}
-          registry: ghcr.io
-      - name: Login with RHQCR
-        uses: docker/login-action@v1
+          scandir: './${{env.context}}/overlay/usr/local/bin'
+      - name: Lint Dockerfile
+        if: ${{ always() }}
+        uses: hadolint/hadolint-action@v1.6.0
         with:
-          username: ${{ env.RHQCR_BOT_ACCOUNT }}
-          password: ${{ env.RHQCR_BOT_PASSWORD }}
-          registry: quay.io
-      - name: Generate matadata
-        uses: docker/metadata-action@v3
-        id: meta
-        with:
-          images: |
-            ghcr.io/${{ env.GHCR_NAMESPACE }}/${{ env.image_name }}
-            quay.io/${{ env.RHQCR_NAMESPACE }}/${{ env.image_name }}
-          tags: |
-            type=sha,format=long
-            nightly-${{ env.UBUNTU_LTS_CODENAME }}
-            nightly
-          flavor: |
-            latest=false   
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Build da image
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ env.context }}
-          tags: ${{ steps.meta.outputs.tags }}
-          push: true
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            REL=${{ env.UBUNTU_LTS_CODENAME }}
+          dockerfile: "./${{env.context}}/Dockerfile"
   cloudimg-rootfs-release:
      runs-on: ubuntu-latest
-     # For forks, here's the configuration:
-     #  - Wait time: 30 minute
-     #  - Approvers: usually you
-     environment: ship-changes
-     needs: [ cloudimg-rootfs-nightly ]
+     needs: [ lint ]
      permissions:
        # This will alwyas set to read, no need for this.
-       #metadata: read
+       metadata: read
        contents: write
      steps:
       - name: Setup Git
@@ -131,10 +96,4 @@ jobs:
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            REL=${{ env.UBUNTU_LTS_CODENAME }}
-      - name: Trigger CI for the rd-backend
-        run: |
-          date | base64 > src/rd-backend/.trigger-build
-          git add .
-          git commit -m "[ci] trigger docker build for rd-backend" --signoff
-          git push
+            RELEASE=${{ env.UBUNTU_LTS_CODENAME }}
