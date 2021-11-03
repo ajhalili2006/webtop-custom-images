@@ -1,4 +1,4 @@
-name: "[docker-image-builds] Webtop - Kubuntu Flavor"
+name: "docker/ubuntu/kde-desktop"
 
 env:
   # Ubuntu LTS release name to use for downloading cloud images
@@ -19,7 +19,7 @@ env:
   GHCR_USERNAME: ${{ github.repository_owner }}
 
   # Other stuff for Docker builds
-  image_name: webto-kubuntu
+  image_name: ubuntu-kde-desktop
   context: src/kde-desktop
 
   RELEASES_GPG_KEY: ${{ secrets.CURSED_CONTENT_OVER_HERE }}

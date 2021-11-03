@@ -5,9 +5,6 @@ env:
   # from Canonical's Partner Images server, among other things.
   UBUNTU_LTS_CODENAME: focal
 
-  # Pluseaudio module for XRDP, see https://github.com/neutrinolabs/pulseaudio-module-xrdp/releases for latest releases
-  XRDP_PLUSE_VERSION: v0.5
-
   # Registry namespaces, to avoid only-lowercase-supported errors
   GHCR_NAMESPACE: ajhalili2006
   RHQCR_NAMESPACE: ajhalili2006
@@ -22,18 +19,15 @@ env:
   GHCR_USERNAME: ${{ github.repository_owner }}
 
   # Other stuff for Docker builds
-  image_name: remote-desktop-backend
-  context: src/rd-backend
-
-  RELEASES_GPG_KEY: ${{ secrets.CURSED_CONTENT_OVER_HERE }}
-  RELEASES_GPG_PASSPHARSE: ${{ secrets.COOL_AND_NORMAL }}
+  image_name: remote-desktop-logic
+  context: src/remote-desktop-logic
 
 on:
   push:
     branches: [ main ]
     paths:
       - "src/rd-backend/Dockerfile"
-      - "src/rd-backend/root/**"
+      - "src/rd-backend/overlay/**"
       - "src/rd-backend/.trigger-build"
 
 jobs:
