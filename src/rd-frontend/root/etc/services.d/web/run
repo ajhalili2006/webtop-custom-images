@@ -1,5 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-cd /gclient || exit
-HOME="/config" exec \
-	s6-setuidgid gildedguy node app.js
