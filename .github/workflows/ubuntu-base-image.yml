@@ -26,7 +26,7 @@ on:
     branches: [ main ]
     paths:
       - "src/ubuntu-lts-base/Dockerfile"
-      - "src/ubuntu-lts-base/sources.list.d/*.list"
+      - "src/ubuntu-lts-base/overlay/**"
       - ".trigger-build"
   #schedule:
   #  - cron: "30 3 */11 * *"
