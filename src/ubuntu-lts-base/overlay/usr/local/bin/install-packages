@@ -23,17 +23,17 @@ RUNLEVEL=1
 # shellcheck disable=SC2034
 DEBIAN_FRONTEND=noninteractive
 
-DAZZLE_MARKS="/var/lib/apt/dazzle-marks/"
-TIMESTAMP=$(date +%s)
+#DAZZLE_MARKS="/var/lib/apt/dazzle-marks/"
+#TIMESTAMP=$(date +%s)
 
-if [ ! -d "${DAZZLE_MARKS}" ]; then
-  mkdir -p "${DAZZLE_MARKS}"
-fi
+#if [ ! -d "${DAZZLE_MARKS}" ]; then
+#  mkdir -p "${DAZZLE_MARKS}"
+#fi
 
 apt-get update
 apt-get install -yq --no-install-recommends "$@"
 
-cp /var/lib/dpkg/status "${DAZZLE_MARKS}/${TIMESTAMP}.status"
+#cp /var/lib/dpkg/status "${DAZZLE_MARKS}/${TIMESTAMP}.status"
 
 apt-get clean -y
 
