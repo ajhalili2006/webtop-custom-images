@@ -2,6 +2,9 @@
 ARG RELEASE=focal
 FROM ghcr.io/linuxserver/baseimage-ubuntu:${RELEASE}
 
+# Should resolve DL4006 as much as possible
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Copy our stuff from overlay directory
 COPY overlay/ /
 

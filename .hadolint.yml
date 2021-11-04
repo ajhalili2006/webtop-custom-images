@@ -3,6 +3,9 @@ trustedRegistries:
   - quay.io
   - docker.io
 override:
-  info: [DL3002]
+  info: [
+    DL3002,
+    DL3004
+  ]
 ignored:
   - DL3003
