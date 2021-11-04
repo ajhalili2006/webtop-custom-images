@@ -14,9 +14,4 @@ COPY overlay/ /
 # - https://github.com/gitpod-io/workspace-images/blob/master/base/install-packages on installing packages while
 #   keeping stuff below the threashold for Dive to warn.
 RUN /usr/local/bin/upgrade-packages; \
-    # We'll also install Node.js 14.x ahead of time.
-    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor \
-    | sudo tee /usr/share/keyrings/nodesource-archive-keyring.gpg > /dev/null; \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/nodesourc-archive-keyring.gpg] https://deb.nodesource.com/node_14.x $(lsb_release -cs) main" \
-    | sudo tee /etc/apt/sources.list.d/nodesource.list > /dev/null; \
     /usr/local/bin/install-packages git-lfs gh glab dive nodejs
