@@ -19,77 +19,32 @@ env:
   GHCR_USERNAME: ${{ github.repository_owner }}
 
   # Other stuff for Docker builds
-  image_name: ubuntu-kde-desktop
+  image_name: webtop-ubuntu-kde-desktop
   context: src/kde-desktop
-
-  RELEASES_GPG_KEY: ${{ secrets.CURSED_CONTENT_OVER_HERE }}
-  RELEASES_GPG_PASSPHARSE: ${{ secrets.COOL_AND_NORMAL }}
-
 on:
   push:
     branches: [ main ]
     paths:
       - "src/kde-desktop/Dockerfile"
-      - "src/kde-desktop/root/**"
+      - "src/kde-desktop/overlay/**"
       - "src/kde-desktop/.trigger-build"
+  workflow_dispatch:
 
 jobs:
-  webtop-kubuntu-nightly:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Login with GHCR
-        uses: docker/login-action@v1
+      - name: Lint Dockerfile
+        if: ${{ always() }}
+        uses: hadolint/hadolint-action@v1.6.0
         with:
-          username: ${{ env.GHCR_USERNAME }}
-          password: ${{ env.GHCR_PAT }}
-          registry: ghcr.io
-      - name: Login with RHQCR
-        uses: docker/login-action@v1
-        with:
-          username: ${{ env.RHQCR_BOT_ACCOUNT }}
-          password: ${{ env.RHQCR_BOT_PASSWORD }}
-          registry: quay.io
-      - name: Generate matadata
-        uses: docker/metadata-action@v3
-        id: meta
-        with:
-          images: |
-            ghcr.io/${{ env.GHCR_NAMESPACE }}/${{ env.image_name }}
-            quay.io/${{ env.RHQCR_NAMESPACE }}/${{ env.image_name }}
-          tags: |
-            type=sha,format=long
-            nightly-${{ env.UBUNTU_LTS_CODENAME }}
-            nightly
-          flavor: |
-            latest=false   
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Build da image
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ env.context }}
-          tags: ${{ steps.meta.outputs.tags }}
-          push: true
-          labels: ${{ steps.meta.outputs.labels }}
-  webtop-kubuntu-release:
+          dockerfile: "./${{env.context}}/Dockerfile"
+  build:
      runs-on: ubuntu-latest
-     # For forks, here's the configuration:
-     #  - Wait time: 30 minute
-     #  - Approvers: usually you
-     environment: ship-changes-webtop-kubuntu
-     needs: [ webtop-kubuntu-nightly ]
-     permissions:
-       # This will alwyas set to read, no need for this.
-       #metadata: read
-       contents: write
+     needs: [ lint ]
      steps:
-      - name: Setup Git
-        run: curl -fsSL https://github.com/code-server-boilerplates/charts/raw/main/scripts/setup-ci | bash
-        env:
-          GH_ACTIONS_MODE: 1
+      - uses: actions/checkout@v2
       - name: Login with GHCR
         uses: docker/login-action@v1
         with:
@@ -124,3 +79,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           push: true
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            UBUNTU_LTS_CODENAME=${{env.UBUNTU_LTS_CODENAME}}

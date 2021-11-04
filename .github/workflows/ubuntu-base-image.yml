@@ -19,12 +19,8 @@ env:
   GHCR_USERNAME: ${{ github.repository_owner }}
 
   # Other stuff for Docker builds
-  image_name: ubuntu-base
+  image_name: webtop-ubuntu-base
   context: src/ubuntu-lts-base
-
-  RELEASES_GPG_KEY: ${{ secrets.CURSED_CONTENT_OVER_HERE }}
-  RELEASES_GPG_PASSPHARSE: ${{ secrets.COOL_AND_NORMAL }}
-
 on:
   push:
     branches: [ main ]

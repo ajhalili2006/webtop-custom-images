@@ -1,4 +1,4 @@
-name: "[docker-image-builds] Remote Dekstop Backend"
+name: "docker/ubuntu/remote-desktop-logic"
 
 env:
   # Ubuntu LTS release name to use for downloading cloud images
@@ -22,73 +22,36 @@ env:
   image_name: remote-desktop-logic
   context: src/remote-desktop-logic
 
+  XRDP_PLUSE_VERSION: v0.4
+  GUACD_VERSION: "1.1.0"
 on:
   push:
     branches: [ main ]
     paths:
-      - "src/rd-backend/Dockerfile"
-      - "src/rd-backend/overlay/**"
-      - "src/rd-backend/.trigger-build"
+      - "src/remote-desktop-logic/Dockerfile"
+      - "src/remote-desktop-logic/overlay/**"
+      - "src/remote-desktop-logic/.trigger-build"
+  workflow_dispatch:
 
 jobs:
-  rd-backend-nightly:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Login with GHCR
-        uses: docker/login-action@v1
+      #- name: Run ShellCheck
+      #  uses: ludeeus/action-shellcheck@master
+      #  with:
+      #    scandir: './${{env.context}}/overlay'
+      - name: Lint Dockerfile
+        if: ${{ always() }}
+        uses: hadolint/hadolint-action@v1.6.0
         with:
-          username: ${{ env.GHCR_USERNAME }}
-          password: ${{ env.GHCR_PAT }}
-          registry: ghcr.io
-      - name: Login with RHQCR
-        uses: docker/login-action@v1
-        with:
-          username: ${{ env.RHQCR_BOT_ACCOUNT }}
-          password: ${{ env.RHQCR_BOT_PASSWORD }}
-          registry: quay.io
-      - name: Generate matadata
-        uses: docker/metadata-action@v3
-        id: meta
-        with:
-          images: |
-            ghcr.io/${{ env.GHCR_NAMESPACE }}/${{ env.image_name }}
-            quay.io/${{ env.RHQCR_NAMESPACE }}/${{ env.image_name }}
-          tags: |
-            type=sha,format=long
-            nightly-${{ env.UBUNTU_LTS_CODENAME }}
-            nightly
-          flavor: |
-            latest=false   
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Build da image
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ env.context }}
-          tags: ${{ steps.meta.outputs.tags }}
-          push: true
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            XRDP_PULSE_VERSION=${{ env.XRDP_PLUSE_VERSION }}
-  rd-backend-release:
+          dockerfile: "./${{env.context}}/Dockerfile"
+  build:
      runs-on: ubuntu-latest
-     # For forks, here's the configuration:
-     #  - Wait time: 30 minute
-     #  - Approvers: usually you
-     environment: ship-changes-rdbackend
-     needs: [ rd-backend-nightly ]
-     permissions:
-       # This will alwyas set to read, no need for this.
-       #metadata: read
-       contents: write
+     needs: [ "lint" ]
      steps:
-      - name: Setup Git
-        run: curl -fsSL https://github.com/code-server-boilerplates/charts/raw/main/scripts/setup-ci | bash
-        env:
-          GH_ACTIONS_MODE: 1
+      - uses: actions/checkout@v2
       - name: Login with GHCR
         uses: docker/login-action@v1
         with:
@@ -125,9 +88,5 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             XRDP_PLUSE_VERSION=${{ env.XRDP_PLUSE_VERSION }}
-      - name: Trigger CI for the rd-frontend
-        run: |
-          date | base64 > src/rd-frontend/.trigger-build
-          git add .
-          git commit -m "[ci] trigger docker build for rd-frontend" --signoff
-          git push
+            GUACD_VERSION=${{ env.GUACD_VERSION }}
+            RELEASE=${{env.UBUNTU_LTS_CODENAME}}
