@@ -2,3 +2,7 @@ trustedRegistries:
   - ghcr.io
   - quay.io
   - docker.io
+override:
+  info: [DL3002]
+ignored:
+  - DL3003
