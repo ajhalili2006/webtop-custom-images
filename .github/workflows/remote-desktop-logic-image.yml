@@ -1,10 +1,6 @@
 name: "docker/ubuntu/remote-desktop-logic"
 
 env:
-  # Ubuntu LTS release name to use for downloading cloud images
-  # from Canonical's Partner Images server, among other things.
-  UBUNTU_LTS_CODENAME: focal
-
   # Registry namespaces, to avoid only-lowercase-supported errors
   GHCR_NAMESPACE: ajhalili2006
   RHQCR_NAMESPACE: ajhalili2006
@@ -21,9 +17,6 @@ env:
   # Other stuff for Docker builds
   image_name: remote-desktop-logic
   context: src/remote-desktop-logic
-
-  XRDP_PLUSE_VERSION: v0.4
-  GUACD_VERSION: "1.1.0"
 on:
   push:
     branches: [ main ]
@@ -32,6 +25,19 @@ on:
       - "src/remote-desktop-logic/overlay/**"
       - "src/remote-desktop-logic/.trigger-build"
   workflow_dispatch:
+    inputs:
+      codename:
+        required: true
+        description: Ubuntu release codename, only supports LTS releases available on ghcr.io/linuxserver/baseimage-ubuntu.
+        default: focal
+      xrdp_pulse_release:
+        required: true
+        description: Check releases at https://github.com/neutrinolabs/pulseaudio-module-xrdp/releases for latest versions.
+        default: v0.4
+      quacd_release:
+        required: true
+        description: Check releases at https://github.com/apache/guacamole-server/tags for latest versions.
+        default: '1.1.0'
 
 jobs:
   lint:
@@ -50,6 +56,10 @@ jobs:
   build:
      runs-on: ubuntu-latest
      needs: [ "lint" ]
+     env:
+       UBUNTU_LTS_CODENAME: ${{ github.event.inputs.rcodename || 'focal' }}
+       XRDP_PLUSE_VERSION: ${{ github.event.inputs.xrdp_pulse_release || 'v0.4' }}
+       GUACD_VERSION: ${{ github.event.inputs.quacd_release || '1.1.0' }}
      steps:
       - uses: actions/checkout@v2
       - name: Login with GHCR

@@ -4,5 +4,8 @@
         ".hadolint.yml",
         "--no-color"
     ],
-    "git.alwaysSignOff": true
+    "git.alwaysSignOff": true,
+    "prettier.endOfLine": "lf",
+    "files.eol": "\n",
+    "files.insertFinalNewline": true
 }

@@ -1,10 +1,6 @@
 name: "docker/ubuntu-lts-base"
 
 env:
-  # Ubuntu LTS release name to use for downloading cloud images
-  # from Canonical's Partner Images server, among other things.
-  UBUNTU_LTS_CODENAME: focal
-
   # Registry namespaces, to avoid only-lowercase-supported errors
   GHCR_NAMESPACE: ajhalili2006
   RHQCR_NAMESPACE: ajhalili2006
@@ -31,6 +27,11 @@ on:
   #schedule:
   #  - cron: "30 3 */11 * *"
   workflow_dispatch:
+    inputs:
+      codename:
+        required: true
+        description: Ubuntu release codename, only supports LTS releases available on ghcr.io/linuxserver/baseimage-ubuntu.
+        default: focal
 
 jobs:
   lint:
@@ -49,6 +50,8 @@ jobs:
   build:
      runs-on: ubuntu-latest
      needs: [ lint ]
+     env:
+      UBUNTU_LTS_CODENAME: ${{ github.event.inputs.rcodename || 'focal' }}
      steps:
       - uses: actions/checkout@v2
       - name: Login with GHCR
