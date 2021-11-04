@@ -2,8 +2,10 @@ trustedRegistries:
   - ghcr.io
   - quay.io
   - docker.io
+  - registry.gitlab.com
 override:
   info:
    - DL3002
    - DL3004
    - DL3003
+failure-threshold: warning
