@@ -1,0 +1,8 @@
+{
+    "hadolint.cliOptions": [
+        "--config",
+        ".hadolint.yml",
+        "--no-color"
+    ],
+    "git.alwaysSignOff": true
+}
