@@ -1,4 +1,17 @@
+# Yarn Modern
 .yarn/*
-!.pnp.*
-!.yarn/releases
+!.yarn/cache
+!.yarn/patches
 !.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Swap files
+*.swp
+
+# Cringely DS_Store
+.DS_Store
+
+# WTFBBQ M$FT
+Thumbs.db
