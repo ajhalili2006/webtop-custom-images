@@ -1,3 +1,3 @@
-FROM gitpod/workspace-full
+FROM quay.io/gitpodified-workspace-images/full:latest
 
-RUn brew update; brew upgrade; brew install gh glab shellcheck hadolint
+RUN brew update; brew upgrade; brew install gh glab shellcheck hadolint
