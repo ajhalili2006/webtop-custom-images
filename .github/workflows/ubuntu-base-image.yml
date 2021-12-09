@@ -1,4 +1,4 @@
-name: "docker/ubuntu-lts-base"
+name: "docker/base/ubuntu"
 
 env:
   # Registry namespaces, to avoid only-lowercase-supported errors
@@ -16,13 +16,13 @@ env:
 
   # Other stuff for Docker builds
   image_name: webtop-ubuntu-base
-  context: src/ubuntu-lts-base
+  context: src/base/ubuntu
 on:
   push:
     branches: [ main ]
     paths:
-      - "src/ubuntu-lts-base/Dockerfile"
-      - "src/ubuntu-lts-base/overlay/**"
+      - "src/base/ubuntu/Dockerfile"
+      - "src/base/ubuntu/overlay/**"
       - ".trigger-build"
   #schedule:
   #  - cron: "30 3 */11 * *"
@@ -51,7 +51,7 @@ jobs:
      runs-on: ubuntu-latest
      needs: [ lint ]
      env:
-      UBUNTU_LTS_CODENAME: ${{ github.event.inputs.rcodename || 'focal' }}
+      UBUNTU_LTS_CODENAME: ${{ github.event.inputs.codename || 'focal' }}
      steps:
       - uses: actions/checkout@v2
       - name: Login with GHCR

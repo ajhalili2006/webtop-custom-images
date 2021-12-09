@@ -1,4 +1,4 @@
-name: "docker/ubuntu/remote-desktop-logic"
+name: "docker/rd-logic"
 
 env:
   # Registry namespaces, to avoid only-lowercase-supported errors
@@ -15,13 +15,13 @@ env:
   GHCR_USERNAME: ${{ github.repository_owner }}
 
   # Other stuff for Docker builds
-  image_name: remote-desktop-logic
+  image_name: webtop-rd-base-ubuntu
   context: src/remote-desktop-logic
 on:
   push:
     branches: [ main ]
     paths:
-      - "src/remote-desktop-logic/Dockerfile"
+      - "src/rd-logic/Dockerfile"
       - "src/remote-desktop-logic/overlay/**"
       - "src/remote-desktop-logic/.trigger-build"
   workflow_dispatch:
