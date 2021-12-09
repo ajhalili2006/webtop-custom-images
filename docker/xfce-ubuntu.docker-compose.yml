@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+version: "3"
+services:
+  webtop:
+    image: quay.io/ajhalili2006/webtop-ubuntu-xfce
+    container_name: webtop-xfce4-ajhalili2006
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=33333
+      - PGID=33333
+      - TZ=Asia/Manila
+    volumes:
+      - ./config/homedir:/config
+      - ./config/keys/
+    ports:
+    ports:
+      - 3000:3000
+      # To access the xrdp server easily through the local companion app
+      # though expect some issues.
+      - 44882:3389
+    shm_size: "1gb" #optional
+    restart: unless-stopped

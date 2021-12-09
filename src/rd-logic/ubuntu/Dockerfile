@@ -45,7 +45,7 @@ SHELL ["/bin/sh", "-o", "pipefail", "-c"]
 # Ensures we're root in case shit happens on permissions stuff.
 USER root
 # Borrow our install-packages script just for this stage.
-COPY ../ubuntu-lts-base/overlay/usr/local/bin/install-packages /usr/local/bin/install-packages
+COPY ../../overlay/usr/local/bin/install-packages /usr/local/bin/install-packages
 
 ARG GCLIENT_RELEASE=0.1.2
 # Install some dev packages and then get the tarball of gclient.
