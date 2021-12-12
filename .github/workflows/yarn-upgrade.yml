@@ -3,15 +3,15 @@ name: Upgrade Yarn
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 9 12 */1 *"
+    - cron: "30 9 */12 */1 *"
 
 jobs:
   upgrade-yarn-ci:
     runs-on: ubuntu-20.04
     steps:
       - run: |
-          git config --edit user.name "Andrei Jiroh Halili"
-          git config --edit user.email "ajhalili2006@gmail.com"
+          git config --local user.name "Andrei Jiroh Halili"
+          git config --local user.email "ajhalili2006@gmail.com"
       - uses: actions/checkout@v2
         with:
           token: "${{secrets.GUILDEDGUY_PAT}}"
@@ -21,6 +21,7 @@ jobs:
       - run: |
           if ! git commit -m "chore: bump yarn to latest berry version" --signoff -a; then
             echo "Commit failed, exiting gracefully..."
+            exit 0
           else
             git push
           fi
