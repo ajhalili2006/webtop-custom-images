@@ -1,0 +1,8 @@
+stages:
+    - test
+    - build
+
+gitpod:ws-build:
+    stage: build
+    script:
+        - ech todo
