@@ -2,7 +2,15 @@ stages:
     - test
     - build
 
+default:
+  image: 
+    name: node:lts-alpine
+    entrypoint: 
+      - /bin/sh
+  before_script:
+    - apk add docker-cli shellcheck hadolint --no-cache
+
 gitpod:ws-build:
     stage: build
     script:
-        - ech todo
+        - yarn workspace:build

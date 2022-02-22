@@ -1,3 +1,3 @@
-FROM gitpod/workspace-node-lts
+FROM gitpod/workspace-full
 
 RUN brew install gh glab shellcheck hadolint

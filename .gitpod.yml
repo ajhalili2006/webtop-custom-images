@@ -2,6 +2,6 @@ image:
   file: .gitpod.Dockerfile
 vscode:
   extensions:
-    - ldez.ignore-files
+    #- ldez.ignore-files
     - exiasr.hadolint
     - timonwong.shellcheck
