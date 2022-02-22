@@ -1,9 +1,8 @@
 {
   "name": "@ajhalili2006/webtop-custom-images",
-  "packageManager": "yarn@2.4.3",
+  "packageManager": "yarn@3.2.0",
   "scripts": {
     "global:hadolint": "hadolint \"$@\"",
-    "base:build": "docker build \"$@\" --tag ghcr.io/ajhalili2006/webtop-ubuntu-base src/ubuntu-lts-base",
-    "base:lint": "yarn global:hadolint src/ubuntu-lts-base/Dockerfile"
+    "workspace:build": "docker build --file .gitpod.Dockerfile ."
   }
 }
