@@ -15,3 +15,7 @@
 
 # WTFBBQ M$FT
 Thumbs.db
+
+# dotenv
+.env
+!.env.example
