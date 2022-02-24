@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+#shellcheck shell=bash
+
+if [[ $TAILSCALED_NO_NET_ADMIN != "" ]] || [[ ! -f "/dev/net/tun" ]]; then
+  tailscaled -tun userspace-networking --socks5-server localhost:1080
+else
+  tailscaled --socks5-server localhost:1080
+fi
