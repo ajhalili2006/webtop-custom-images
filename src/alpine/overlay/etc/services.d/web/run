@@ -1,0 +1,15 @@
+#!/usr/bin/with-contenv bash
+#shellcheck shell=bash
+
+if [[ $TAILSCALE_AUTHKEY != "" ]]; then
+  if tailscale up --authkey="${TAILSCALE_AUTHKEY}" --hostname="${TAILSCALE_HOSTNAME:-webtop-xfce4}"; then
+     ip=$(tailscale ip -4)
+     echo "[tailscale] IP address: $ip"
+  else
+     echo "[tailscale] Please update your authkey var and restart the container!"
+  fi
+fi
+
+cd /gclient || exit
+HOME="/config" exec \
+        s6-setuidgid abc node app.js

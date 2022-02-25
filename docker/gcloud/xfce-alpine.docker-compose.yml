@@ -3,19 +3,19 @@ services:
   webtop-xfce4-alpine:
     build:
       dockerfile: xfce4.Dockerfile
-      context: src/alpine
+      context: ../../src/alpine
     security_opt:
       - seccomp:unconfined #optional
     environment:
       - PGUID=$PGID
       - PUID=$PUID
     ports:
-      - 3000:3000
+      - 8080:3000
     cap_add:
       - NET_ADMIN
     volumes:
       - xrdp-config:/etc/xrdp
-      - webtop-homedir:/config
+      - $HOMEDIR:/config
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - ../../.env
