@@ -15,7 +15,7 @@ RUN apk update && apk upgrade && apk add \
        font-mutt-misc font-screen-cyrillic font-winitzki-cyrillic \
        font-cronyx-cyrillic terminus-font font-noto font-noto-thai \
        font-noto-tibetan font-ipa font-sony-misc font-daewoo-misc font-jis-misc \
-       font-isas-misc font-noto-emoji libcap tailscale \
+       font-isas-misc font-noto-emoji libcap tailscale telegram-desktop atril \
     && git-lfs install --system
 
 RUN wget -O /usr/local/bin/gp-localapp https://go.rtapp.tk/gitpod/localapp/linux-amd64 \
@@ -25,7 +25,7 @@ RUN wget -O /usr/local/bin/gp-localapp https://go.rtapp.tk/gitpod/localapp/linux
 WORKDIR /gclient
 RUN npm install
 
-# Google Cloud Shell installs
+# Google Cloud CLI setup
 WORKDIR /usr/local
 ARG GCLOUD_CLI_VERSION=374.0.0
 RUN set -xe; IMAGE_ARCH=$(apk --print-arch) \

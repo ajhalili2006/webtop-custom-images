@@ -4,9 +4,12 @@
   "scripts": {
     "global:hadolint": "hadolint \"$@\"",
     "workspace:build": "docker build --file .gitpod.Dockerfile .",
-    "compose-up:xfce4-alpine": "PUID=$(id -u) PGID=$(id -g) docker-compose -f docker/localdev/xfce-alpine.docker-compose.yml up --build",
-    "compose-up:xfce4-alpine-gp": "PUID=33333 PGID=33333 docker-compose -f docker/localdev/xfce-alpine.docker-compose.yml up --build",
-    "compose-up:xfce4-alpine-devshell": "HOMEDIR=$HOME docker-compose -f docker/gcloud/xfce-alpine.docker-compose.yml up --build",
+    "compose-up:xfce4-alpine": "PUID=$(id -u) PGID=$(id -g) docker-compose -f docker/localdev/xfce-alpine.docker-compose.yml up -d --build",
+    "compose-up:xfce4-alpine-gp": "PUID=33333 PGID=33333 docker-compose -f docker/localdev/xfce-alpine.docker-compose.yml up -d --build",
+    "compose-up:xfce4-alpine-devshell": "HOMEDIR=$HOME PUID=1000 PGID=1000 docker-compose -f docker/gcloud/xfce-alpine.docker-compose.yml up -d --build",
+    "compose-logs:xfce4-alpine": "docker-compose -f docker/localdev/xfce-alpine.docker-compose.yml logs -f -t --tail=all",
+    "compose-logs:xfce4-alpine-gp": "yarn compose-logs:xfce4-alpine",
+    "compose-logs:xfce4-alpine-devshell": "docker-compose -f docker/gcloud/xfce-alpine.docker-compose.yml logs -f -t --tail=all",
     "build:xfce4-alpine": "docker build --tag ajhalili2006/webtop-xfce4:alpine --file src/alpine/xfce4.Dockerfile src/alpine"
   }
 }
