@@ -28,9 +28,9 @@ RUN npm install
 # Google Cloud CLI setup
 WORKDIR /usr/local
 ARG GCLOUD_CLI_VERSION=374.0.0
-RUN set -xe; IMAGE_ARCH=$(apk --print-arch) \
+RUN IMAGE_ARCH=$(apk --print-arch) \
   && wget "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_CLI_VERSION}-linux-$IMAGE_ARCH.tar.gz" -O /usr/local/google-cloud-sdk.tar.gz \
-  && tar zxvf /usr/local/google-cloud-sdk.tar.gz \
+  && tar zxf /usr/local/google-cloud-sdk.tar.gz \
   && ./google-cloud-sdk/install.sh -q \
   && rm /usr/local/google-cloud-sdk.tar.gz \
   # Some fixes to ensure everything is in PATH

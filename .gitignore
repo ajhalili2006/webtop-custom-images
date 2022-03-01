@@ -19,3 +19,6 @@ Thumbs.db
 # dotenv
 .env
 !.env.example
+
+# some cursed data
+docker/data

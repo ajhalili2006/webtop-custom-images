@@ -1,0 +1,26 @@
+version: '3'
+services:
+  webtop-xfce4-alpine:
+    image: ghcr.io/ajhalili2006/webtop-alpine-xfce4:latest
+    security_opt:
+      - seccomp:unconfined # Required to fix the "failed to fdwalk operation not permitted" error on Docker side.
+    environment:
+      - PGUID=$PGID
+      - PUID=$PUID
+      - TZ=Asia/Manila
+    ports:
+      - 3000:3000
+    cap_add:
+      - NET_ADMIN # For Tailscale stuff
+    volumes:
+      - xrdp-config:/etc/xrdp
+      - webtop-homedir:/config
+      - /var/run/docker.sock:/var/run/docker.sock
+      - tailscale-statedir:/var/lib/tailscale
+    env_file:
+      - ../../.env
+
+volumes:
+  xrdp-config:
+  webtop-homedir:
+  tailscale-statedir:
