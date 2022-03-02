@@ -9,7 +9,9 @@ if [[ $TAILSCALE_AUTHKEY != "" ]] && [[ ! -f "/var/lib/tailscale/tailscaled.stat
      echo "[tailscale] Please update your authkey var and restart the container!"
   fi
 elif [[ -f "/var/lib/tailscale/tailscaled.state" ]]; then
+  echo "[tailscale] State file exists, sleeps in 10 seconds to allow for warmup of deamon"
   ip=$(tailscale ip -4)
+  sleep 10
   if tailscale status >>/dev/null; then
     echo "[tailscale] IP address: $ip"
   else

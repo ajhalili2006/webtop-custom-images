@@ -5,7 +5,7 @@ PGID=${PGID:-911}
 
 groupmod -o -g "$PGID" abc
 usermod -o -u "$PUID" abc
-chsh -s /bin/bash abc
+echo abc | chsh -s /bin/bash abc >> /dev/null
 
 echo '
 -------------------------------------
