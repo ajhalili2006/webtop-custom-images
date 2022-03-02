@@ -7,7 +7,7 @@ COPY overlay/ /
 # Add additional packages
 RUN apk update && apk upgrade && apk add \
        s6-ipcserver gpg git git-lfs python3 py3-pip \
-       nodejs npm coreutils htop \
+       nodejs npm coreutils htop curl wget nano \
        zsh seahorse procps terminus-font \
        ttf-inconsolata ttf-dejavu \
        font-noto ttf-font-awesome \
@@ -16,6 +16,7 @@ RUN apk update && apk upgrade && apk add \
        font-cronyx-cyrillic terminus-font font-noto font-noto-thai \
        font-noto-tibetan font-ipa font-sony-misc font-daewoo-misc font-jis-misc \
        font-isas-misc font-noto-emoji libcap tailscale telegram-desktop atril \
+       breeze-icons breeze breeze-gtk \
     && git-lfs install --system
 
 RUN wget -O /usr/local/bin/gp-localapp https://go.rtapp.tk/gitpod/localapp/linux-amd64 \
