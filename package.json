@@ -24,7 +24,7 @@
     "ts-exec:xfce4-alpine-devshell": "docker exec -it gcloud_webtop-xfce4-alpine_1 tailscale \"$@\"",
     "ts-ping:xfce4-alpine": "yarn ts-exec:xfce4-alpine ping -c 0 --until-direct=false \"$@\"",
     "ts-ping:xfce4-alpine-gp": "yarn ts-ping:xfce4-alpine \"$@\"",
-    "ts-ping:xfce4-alpine-devshell": yarn ts-exec:xfce4-alpine-devshell ping -c 0 --until-direct=false \"$@\"",
+    "ts-ping:xfce4-alpine-devshell": "yarn ts-exec:xfce4-alpine-devshell ping -c 0 --until-direct=false \"$@\"",
     "compose-logs:xfce4-alpine": "docker-compose -f docker/localdev/xfce-alpine.docker-compose.yml logs -f -t --tail=all",
     "compose-logs:xfce4-alpine-gp": "yarn compose-logs:xfce4-alpine",
     "compose-logs:xfce4-alpine-devshell": "docker-compose -f docker/gcloud/xfce-alpine.docker-compose.yml logs -f -t --tail=all",
