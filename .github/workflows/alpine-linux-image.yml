@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - src/alpine/xfce4.Dockerfile
+      - src/alpine/overlay/**
   workflow_dispatch:
 
 env:
@@ -25,7 +28,8 @@ env:
   dockerfile: xfce4.Dockerfile
 
 jobs:
-  build-job:
+  build-xfce4:
+    name: Build Xfce4 variant
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
