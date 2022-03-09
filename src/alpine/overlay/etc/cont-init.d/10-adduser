@@ -1,5 +1,7 @@
 #!/usr/bin/with-contenv bash
 
+/usr/sbin/sshd
+
 PUID=${PUID:-911}
 PGID=${PGID:-911}
 
@@ -41,7 +43,7 @@ if [[ "${time32}" == "1970" || "${time32}" == "1969" ]] && [ "$(uname -m)" == "a
   echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-Your DockerHost is running an outdated version of libseccomp
+Your Docker host is running an outdated version of libseccomp
 
 To fix this, please visit https://docs.linuxserver.io/faq#libseccomp
 

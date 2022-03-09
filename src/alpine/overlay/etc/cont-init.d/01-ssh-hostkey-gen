@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+#shellcheck shell=bash
+
+if [[ ! -f /etc/ssh/.hostkey-gen-done ]]; then
+  ssh-keygen -A
+  touch /etc/ssh/.hostkey-gen-done
+fi

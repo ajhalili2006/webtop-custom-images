@@ -10,8 +10,8 @@ if [[ $TAILSCALE_AUTHKEY != "" ]] && [[ ! -f "/var/lib/tailscale/tailscaled.stat
   fi
 elif [[ -f "/var/lib/tailscale/tailscaled.state" ]]; then
   echo "[tailscale] State file exists, sleeps in 10 seconds to allow for warmup of deamon"
-  ip=$(tailscale ip -4)
   sleep 10
+  ip=$(tailscale ip -4)
   if tailscale status >>/dev/null; then
     echo "[tailscale] IP address: $ip"
   else
