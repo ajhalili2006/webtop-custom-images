@@ -5,7 +5,7 @@ FROM lscr.io/linuxserver/webtop:latest
 COPY overlay/ /
 
 # Add additional packages
-RUN apk update && apk upgrade && apk add \
+RUN apk update && apk upgrade -v && apk add -v \
        s6-ipcserver gpg git git-lfs python3 py3-pip \
        nodejs npm coreutils htop curl wget nano \
        zsh seahorse procps terminus-font \
@@ -16,8 +16,7 @@ RUN apk update && apk upgrade && apk add \
        font-cronyx-cyrillic terminus-font font-noto font-noto-thai \
        font-noto-tibetan font-ipa font-sony-misc font-daewoo-misc font-jis-misc \
        font-isas-misc font-noto-emoji libcap tailscale telegram-desktop atril \
-       breeze-icons breeze breeze-gtk \
-    && git-lfs install --system
+       breeze-icons breeze breeze-gtk
 
 RUN wget -O /usr/local/bin/gp-localapp https://go.rtapp.tk/gitpod/localapp/linux-amd64 \
     && chmod +x /usr/local/bin/gp-localapp
@@ -28,7 +27,7 @@ RUN npm install
 
 # Google Cloud CLI setup
 WORKDIR /usr/local
-ARG GCLOUD_CLI_VERSION=374.0.0
+ARG GCLOUD_CLI_VERSION=376.0.0
 RUN IMAGE_ARCH=$(apk --print-arch) \
   && wget "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_CLI_VERSION}-linux-$IMAGE_ARCH.tar.gz" -O /usr/local/google-cloud-sdk.tar.gz \
   && tar zxf /usr/local/google-cloud-sdk.tar.gz \
