@@ -16,7 +16,7 @@ RUN apk update && apk upgrade -v && apk add -v \
        font-cronyx-cyrillic terminus-font font-noto font-noto-thai \
        font-noto-tibetan font-ipa font-sony-misc font-daewoo-misc font-jis-misc \
        font-isas-misc font-noto-emoji libcap tailscale telegram-desktop atril \
-       breeze-icons breeze breeze-gtk
+       breeze-icons breeze breeze-gtk xfce4-screenshooter
 
 RUN wget -O /usr/local/bin/gp-localapp https://go.rtapp.tk/gitpod/localapp/linux-amd64 \
     && chmod +x /usr/local/bin/gp-localapp

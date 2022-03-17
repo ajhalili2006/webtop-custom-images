@@ -53,7 +53,7 @@ jobs:
             ghcr.io/${{ env.GHCR_NAMESPACE }}/${{ env.image_name }}
             quay.io/${{ env.RHQCR_NAMESPACE }}/${{ env.image_name }}
           tags: |
-            commit-${{ env.GITHUB_SHA }}
+            type=sha,prefix=commit-,format=long
           flavor: |
            latest=true
       - name: Set up QEMU
