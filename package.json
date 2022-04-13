@@ -7,6 +7,8 @@
     "global:hadolint": "hadolint \"$@\"",
     "workspace:build": "docker build --file .gitpod.Dockerfile .",
     "start": "yarn compose-up:xfce4-alpine",
+    "gitpod:xfce4-alpine": "yarn compose-up:xfce4-alpine-gp",
+    "devshell:xfce4-alpine": "yarn compose-up:xfce4-alpine-devshell",
     "compose-up:xfce4-alpine": "PUID=$(id -u) PGID=$(id -g) docker-compose -f docker/localdev/xfce-alpine.docker-compose.yml up -d --build",
     "compose-up:xfce4-alpine-gp": "PUID=33333 PGID=33333 docker-compose -f docker/localdev/xfce-alpine.docker-compose.yml up -d --build",
     "compose-up:xfce4-alpine-devshell": "HOMEDIR=$HOME PUID=1000 PGID=1000 docker-compose -f docker/gcloud/xfce-alpine.docker-compose.yml up -d --build",
