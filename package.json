@@ -4,6 +4,7 @@
   "license": "GPL-3.0",
   "packageManager": "yarn@3.2.0",
   "scripts": {
+    "start":"yarn devshell:xfce4-alpine",
     "global:hadolint": "hadolint \"$@\"",
     "workspace:build": "docker build --file .gitpod.Dockerfile .",
     "start": "yarn compose-up:xfce4-alpine",

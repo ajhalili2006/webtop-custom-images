@@ -5,7 +5,7 @@ services:
       dockerfile: xfce4.Dockerfile
       context: ../../src/alpine
     security_opt:
-      - seccomp:unconfined #optional
+      - seccomp:unconfined # Need for most cases
     environment:
       - PGUID=$PGID
       - PUID=$PUID
@@ -14,12 +14,13 @@ services:
     cap_add:
       - NET_ADMIN
     volumes:
-      - xrdp-config:/etc/xrdp
+      - ../data/xrdp:/etc/xrdp
       - $HOMEDIR:/config
       - /var/run/docker.sock:/var/run/docker.sock
       - ../data/tailscale-statedir:/var/lib/tailscale
     env_file:
       - ../../.env
 
-volumes:
-  xrdp-config:
+# Not being used here
+#volumes:
+#  xrdp-config:
