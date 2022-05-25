@@ -9,6 +9,7 @@ services:
     environment:
       - PGUID=$PGID
       - PUID=$PUID
+      - TZ=Asia/Manila
     ports:
       - 8080:3000
     cap_add:

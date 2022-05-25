@@ -8,15 +8,13 @@ COPY overlay/ /
 RUN apk update && apk upgrade -v && apk add -v \
        s6-ipcserver gpg git git-lfs python3 py3-pip \
        nodejs npm coreutils htop curl wget nano github-cli glab \
-       zsh seahorse procps terminus-font \
-       ttf-inconsolata ttf-dejavu \
-       font-noto ttf-font-awesome \
-       font-noto-extra font-vollkorn font-misc-cyrillic \
+       zsh seahorse procps terminus-font ttf-inconsolata ttf-dejavu \
+       font-noto ttf-font-awesome font-noto-extra font-vollkorn font-misc-cyrillic \
        font-mutt-misc font-screen-cyrillic font-winitzki-cyrillic \
        font-cronyx-cyrillic terminus-font font-noto font-noto-thai \
        font-noto-tibetan font-ipa font-sony-misc font-daewoo-misc font-jis-misc \
        font-isas-misc font-noto-emoji libcap tailscale telegram-desktop atril \
-       breeze-icons breeze breeze-gtk xfce4-screenshooter
+       breeze-icons breeze breeze-gtk xfce4-screenshooter croc
 
 RUN wget -O /usr/local/bin/gp-localapp https://go.rtapp.tk/gitpod/localapp/linux-amd64 \
     && chmod +x /usr/local/bin/gp-localapp
@@ -27,7 +25,7 @@ RUN npm install
 
 # Google Cloud CLI setup
 WORKDIR /usr/local
-ARG GCLOUD_CLI_VERSION=382.0.0
+ARG GCLOUD_CLI_VERSION=386.0.0
 RUN IMAGE_ARCH=$(apk --print-arch) \
   && wget "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_CLI_VERSION}-linux-$IMAGE_ARCH.tar.gz" -O /usr/local/google-cloud-sdk.tar.gz \
   && tar zxf /usr/local/google-cloud-sdk.tar.gz \

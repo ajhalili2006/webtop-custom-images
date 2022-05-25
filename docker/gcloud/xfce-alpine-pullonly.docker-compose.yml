@@ -13,7 +13,7 @@ services:
     cap_add:
       - NET_ADMIN # For Tailscale stuff
     volumes:
-      - xrdp-config:/etc/xrdp
+      - ../data/xrdp:/etc/xrdp
       - $HOMEDIR:/config
       - /var/run/docker.sock:/var/run/docker.sock
       - ../data/tailscale-statedir:/var/lib/tailscale
@@ -21,5 +21,5 @@ services:
     env_file:
       - ../../.env
 
-volumes:
-  xrdp-config:
+#volumes:
+#  xrdp-config:
