@@ -5,7 +5,7 @@ FROM lscr.io/linuxserver/webtop:latest
 COPY overlay/ /
 
 # Add additional packages
-RUN apk update && apk upgrade -v && apk add -v \
+RUN apk update && apk upgrade -va && apk add -v \
        s6-ipcserver gpg git git-lfs python3 py3-pip \
        nodejs npm coreutils htop curl wget nano github-cli glab \
        zsh seahorse procps terminus-font ttf-inconsolata ttf-dejavu \

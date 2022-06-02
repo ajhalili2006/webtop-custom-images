@@ -4,7 +4,7 @@
 if [[ $TAILSCALE_AUTHKEY != "" ]] && [[ ! -f "/var/lib/tailscale/tailscaled.state" ]]; then
   if tailscale up --authkey="${TAILSCALE_AUTHKEY}" --hostname="${TAILSCALE_HOSTNAME:-webtop-xfce4}"; then
      ip=$(tailscale ip -4)
-     echo "[tailscale] IP address: $ip"
+     echo "[tailscale] IP address for SSH and RDP: $ip"
   else
      echo "[tailscale] Please update your authkey var and restart the container!"
   fi
@@ -13,10 +13,11 @@ elif [[ -f "/var/lib/tailscale/tailscaled.state" ]]; then
   sleep 10
   ip=$(tailscale ip -4)
   if tailscale status >>/dev/null; then
-    echo "[tailscale] IP address: $ip"
+    echo "[tailscale] IP address for: $ip"
   else
-    echo "[tailscale] Session expired, please reauthenicate with 'yarn tailscale-reauth:xfce4-alpine' noninteractively using the"
-    echo "[tailscale] authkey parameter to noninteractively authorize the container."
+    echo "[tailscale] Session expired, please reauthenicate with 'tailscale-reauth' command noninteractively using the"
+    echo "[tailscale] authkey parameter inside the container. Do not forget to update the TAILSCALE_AUTHKEY var in your"
+    echo "[tailscale] .env file"
   fi
 fi
 
